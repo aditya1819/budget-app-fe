@@ -5,7 +5,7 @@ type Props = {
   name: string;
   amount: number;
   max: number;
-  gray: boolean;
+  gray?: boolean;
 };
 
 function getProgressBarVarient(amount: number, max: number) {

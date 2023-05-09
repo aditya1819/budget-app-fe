@@ -4,7 +4,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 
 const BudgetsContext = React.createContext({});
 
-export const useBudget = () => {
+export const useBudget = (): any => {
   return useContext(BudgetsContext);
 };
 
@@ -12,14 +12,14 @@ type Props = {
   children: any;
 };
 
-interface Expense {
+export interface Expense {
   id: string;
   budgetId: string;
   amount: number;
   description: string;
 }
 
-interface Budget {
+export interface Budget {
   id: string;
   name: string;
   max: number;
