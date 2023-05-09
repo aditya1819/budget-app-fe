@@ -6,6 +6,7 @@ type Props = {
   amount: number;
   max: number;
   onAddExpenseClick: any;
+  onViewExpenseClick: any;
   gray?: boolean;
   hideButtons?: boolean;
 };
@@ -21,6 +22,7 @@ function BudgetCard({
   max,
   gray,
   onAddExpenseClick,
+  onViewExpenseClick,
   hideButtons
 }: Props) {
   const classNames = [];
@@ -59,7 +61,9 @@ function BudgetCard({
             >
               Add Expense
             </Button>
-            <Button variant="outline-secondary">View Expenses</Button>
+            <Button variant="outline-secondary" onClick={onViewExpenseClick}>
+              View Expenses
+            </Button>
           </Stack>
         )}
       </Card.Body>

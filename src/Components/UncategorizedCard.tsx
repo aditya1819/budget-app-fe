@@ -9,8 +9,6 @@ function UncategorizedCard(props: any) {
     0
   );
 
-  console.log(amount);
-
   if (amount === 0) return null;
 
   return <BudgetCard amount={amount} name="Uncategorized" gray {...props} />;

@@ -1,10 +1,5 @@
 import BudgetCard from './BudgetCard';
-import {
-  useBudget,
-  UNCATEGORZED_ID,
-  Expense,
-  Budget
-} from '../contexts/BudgetContext';
+import { useBudget, Expense, Budget } from '../contexts/BudgetContext';
 
 function TotalCard(props: any) {
   const { expenses, budgets } = useBudget();

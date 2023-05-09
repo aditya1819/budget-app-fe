@@ -32,7 +32,6 @@ export const BudgetProvider = ({ children }: Props) => {
   const [expenses, setExpenses] = useLocalStorage('expenses', []);
 
   function getBudgetExpenses(budgetId: string) {
-    console.log(expenses);
     return expenses.filter((exp: Expense) => exp.budgetId === budgetId);
   }
 
@@ -56,8 +55,6 @@ export const BudgetProvider = ({ children }: Props) => {
       max
     };
 
-    console.log(newBudget);
-
     setBudgets((prevBudgets: Budget[]) => {
       if (prevBudgets.find((budget) => budget.name === name)) {
         return prevBudgets;
@@ -67,7 +64,12 @@ export const BudgetProvider = ({ children }: Props) => {
   }
 
   function deleteBudget({ id }: any) {
-    // TODO: handles expenses when budget is delete
+    setExpenses((prevExpenses: Expense[]) => {
+      return prevExpenses.map((expense) => {
+        if (expense.budgetId !== id) return expense;
+        return { ...expense, budgetId: UNCATEGORZED_ID };
+      });
+    });
 
     setBudgets((prevBudgets: Budget[]) => {
       return prevBudgets.filter((budgets) => budgets.id !== id);
