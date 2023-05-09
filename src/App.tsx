@@ -10,6 +10,7 @@ import {
 } from './contexts/BudgetContext';
 import AddExpenseModal from './components/AddExpenseModal';
 import UncategorizedCard from './components/UncategorizedCard';
+import TotalCard from './components/TotalBudgetCard';
 
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -63,6 +64,7 @@ function App() {
           <UncategorizedCard
             onAddExpenseClick={() => openAddExpenseModal(UNCATEGORZED_ID)}
           />
+          <TotalCard />
         </div>
       </Container>
       <AddBudgetModal

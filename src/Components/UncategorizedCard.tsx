@@ -1,4 +1,3 @@
-import React from 'react';
 import BudgetCard from './BudgetCard';
 import { useBudget, UNCATEGORZED_ID, Expense } from '../contexts/BudgetContext';
 
