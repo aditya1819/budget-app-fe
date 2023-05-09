@@ -5,6 +5,7 @@ type Props = {
   name: string;
   amount: number;
   max: number;
+  onAddExpenseClick: any;
   gray?: boolean;
 };
 
@@ -13,7 +14,7 @@ function getProgressBarVarient(amount: number, max: number) {
   return ratio < 0.5 ? 'primary' : ratio < 0.75 ? 'warning' : 'danger';
 }
 
-function BudgetCard({ name, amount, max, gray }: Props) {
+function BudgetCard({ name, amount, max, gray, onAddExpenseClick }: Props) {
   const classNames = [];
   if (amount > max) {
     classNames.push('bg-danger', 'bg-opacity-10');
@@ -38,7 +39,11 @@ function BudgetCard({ name, amount, max, gray }: Props) {
           now={amount}
         ></ProgressBar>
         <Stack direction="horizontal" gap={2} className="mt-4">
-          <Button variant="outline-primary" className="ms-auto">
+          <Button
+            variant="outline-primary"
+            className="ms-auto"
+            onClick={onAddExpenseClick}
+          >
             Add Expense
           </Button>
           <Button variant="outline-secondary">View Expenses</Button>

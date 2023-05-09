@@ -8,6 +8,8 @@ export const useBudget = (): any => {
   return useContext(BudgetsContext);
 };
 
+export const UNCATEGORZED_ID = 'uncategorized'
+
 type Props = {
   children: any;
 };
