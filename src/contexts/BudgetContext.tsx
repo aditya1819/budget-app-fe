@@ -8,7 +8,7 @@ export const useBudget = (): any => {
   return useContext(BudgetsContext);
 };
 
-export const UNCATEGORZED_ID = 'uncategorized'
+export const UNCATEGORZED_ID = 'Uncategorized';
 
 type Props = {
   children: any;
@@ -32,6 +32,7 @@ export const BudgetProvider = ({ children }: Props) => {
   const [expenses, setExpenses] = useLocalStorage('expenses', []);
 
   function getBudgetExpenses(budgetId: string) {
+    console.log(expenses);
     return expenses.filter((exp: Expense) => exp.budgetId === budgetId);
   }
 
@@ -54,6 +55,8 @@ export const BudgetProvider = ({ children }: Props) => {
       name,
       max
     };
+
+    console.log(newBudget);
 
     setBudgets((prevBudgets: Budget[]) => {
       if (prevBudgets.find((budget) => budget.name === name)) {
