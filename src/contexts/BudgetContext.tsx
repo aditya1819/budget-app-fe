@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { makeAxiosRequest } from '../Utils';
+import { config } from '../Configuration';
 
 const BudgetsContext = React.createContext({});
 
@@ -27,13 +29,29 @@ export interface Budget {
   max: number;
 }
 
+enum HttpMethods {
+  GET = 'GET'
+}
+
 export const BudgetProvider = ({ children }: Props) => {
   const [budgets, setBudgets] = useLocalStorage('budgets', []);
   const [expenses, setExpenses] = useLocalStorage('expenses', []);
 
-  function getBudgetExpenses(budgetId: string) {
-    return expenses.filter((exp: Expense) => exp.budgetId === budgetId);
-  }
+  const getBudgetsForUser = async (userId: string): Promise<any> => {
+    return await makeAxiosRequest(
+      HttpMethods.GET,
+      config.backendHost,
+      config.getBudgetsForUserUrl(userId)
+    );
+  };
+
+  const getBudgetExpenses = async (userId: string, budgetId: string) => {
+    return await makeAxiosRequest(
+      HttpMethods.GET,
+      config.backendHost,
+      config.getBudgetExpensesUrl(userId, budgetId)
+    );
+  };
 
   function addExpense({ description, budgetId, amount }: any) {
     const newExpense: Expense = {
@@ -91,7 +109,8 @@ export const BudgetProvider = ({ children }: Props) => {
         addExpense,
         addBudget,
         deleteBudget,
-        deleteExpense
+        deleteExpense,
+        getBudgetsForUser
       }}
     >
       {children}

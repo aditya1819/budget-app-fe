@@ -1,18 +1,18 @@
 import AddExpenseModal from './AddExpenseModal';
-import UncategorizedCard from './UncategorizedCard';
 import TotalCard from './TotalBudgetCard';
 import ViewExpensesModal from './ViewExpensesModal';
 import { Button, Container, Stack } from 'react-bootstrap';
 import BudgetCard from './BudgetCard';
 import AddBudgetModal from './AddBudgetModal';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useBudget,
   Budget,
   Expense,
   UNCATEGORZED_ID
 } from '../contexts/BudgetContext';
+import { BudgetList } from '../Schema';
 
 const Dashboard = () => {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -21,13 +21,30 @@ const Dashboard = () => {
     string | undefined
   >();
   const [addExpenseBudgetId, setAddExpenseBudgetId] = useState();
+  const [budgets, setBudgets] = useState([] as BudgetList[]);
 
-  const { budgets, getBudgetExpenses } = useBudget();
+  const { getBudgetsForUser } = useBudget();
+
+  const userId = '65fad08ad2d4be06ba7439a4';
 
   function openAddExpenseModal(budgetId: any): any {
     setShowAddExpenseModal(true);
     setAddExpenseBudgetId(budgetId);
   }
+
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      try {
+        const budgets = await getBudgetsForUser(userId);
+        console.log(budgets); // Do something with the budgets
+        setBudgets(budgets);
+      } catch (error) {
+        console.error('Failed to fetch budgets:', error);
+      }
+    };
+
+    fetchBudgets();
+  }, [userId, getBudgetsForUser]); // Depend on userId and getBudgetsForUser
 
   return (
     <>
@@ -50,31 +67,23 @@ const Dashboard = () => {
             alignItems: 'flex-start'
           }}
         >
-          {budgets.map((budget: Budget) => {
-            const amount: number = getBudgetExpenses(budget.id).reduce(
-              (total: number, expense: Expense) => total + expense.amount,
-              0
-            );
-
+          {budgets.map((budget: BudgetList) => {
+            const amount: number = budget.consumed;
             return (
               <BudgetCard
                 key={budget.id}
-                name={budget.name}
+                name={budget.title}
                 amount={amount}
-                max={budget.max}
+                max={budget.total}
                 onAddExpenseClick={() => openAddExpenseModal(budget.id)}
-                onViewExpenseClick={() =>
-                  setViewExpenseModalBudgetId(budget.id)
-                }
+                onViewExpenseClick={() => {
+                  console.log(budget.id);
+                  setViewExpenseModalBudgetId(budget.id);
+                }}
               ></BudgetCard>
             );
           })}
-          <UncategorizedCard
-            onAddExpenseClick={() => openAddExpenseModal(UNCATEGORZED_ID)}
-            onViewExpenseClick={() =>
-              setViewExpenseModalBudgetId(UNCATEGORZED_ID)
-            }
-          />
+
           <TotalCard />
         </div>
       </Container>
@@ -92,6 +101,7 @@ const Dashboard = () => {
         }}
       />
       <ViewExpensesModal
+        userId={userId}
         budgetId={viewExpenseModalBudgetId}
         handleClose={() => {
           setViewExpenseModalBudgetId(undefined);
