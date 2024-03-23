@@ -30,7 +30,8 @@ export interface Budget {
 }
 
 enum HttpMethods {
-  GET = 'GET'
+  GET = 'GET',
+  POST = 'POST'
 }
 
 export const BudgetProvider = ({ children }: Props) => {
@@ -46,6 +47,9 @@ export const BudgetProvider = ({ children }: Props) => {
   };
 
   const getBudgetExpenses = async (userId: string, budgetId: string) => {
+    if (!budgetId) {
+      return [];
+    }
     return await makeAxiosRequest(
       HttpMethods.GET,
       config.backendHost,
@@ -66,20 +70,15 @@ export const BudgetProvider = ({ children }: Props) => {
     });
   }
 
-  function addBudget({ name, max }: any) {
-    const newBudget: Budget = {
-      id: uuidV4(),
-      name,
-      max
-    };
-
-    setBudgets((prevBudgets: Budget[]) => {
-      if (prevBudgets.find((budget) => budget.name === name)) {
-        return prevBudgets;
-      }
-      return [...prevBudgets, newBudget];
-    });
-  }
+  const addBudget = async ({ userId, name, max }: any) => {
+    return await makeAxiosRequest(
+      HttpMethods.POST,
+      config.backendHost,
+      config.addBudgetUrl(userId),
+      {},
+      { budgetCategory: name, amount: max, expenses: [] }
+    );
+  };
 
   function deleteBudget({ id }: any) {
     setExpenses((prevExpenses: Expense[]) => {

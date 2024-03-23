@@ -9,5 +9,9 @@ export const config = Object.freeze({
 
   getBudgetExpensesUrl: (userId: string, budgetId: string) => {
     return `users/${userId}/budgets/${budgetId}`;
+  },
+
+  addBudgetUrl: (userId: string) => {
+    return `users/${userId}/budgets`;
   }
 });

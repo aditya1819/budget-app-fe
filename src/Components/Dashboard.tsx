@@ -23,9 +23,14 @@ const Dashboard = () => {
   const [addExpenseBudgetId, setAddExpenseBudgetId] = useState();
   const [budgets, setBudgets] = useState([] as BudgetList[]);
 
+  const [budgetRefetchTrigger, setBudgetRefetchTrigger] = useState(false);
+
+  const handleBudgetAdded = () => {
+    setBudgetRefetchTrigger((prev) => !prev); // Toggle the state to trigger refetch
+  };
   const { getBudgetsForUser } = useBudget();
 
-  const userId = '65fad08ad2d4be06ba7439a4';
+  const userId = '65ff225cdc9eebfd36be1ebb';
 
   function openAddExpenseModal(budgetId: any): any {
     setShowAddExpenseModal(true);
@@ -44,7 +49,7 @@ const Dashboard = () => {
     };
 
     fetchBudgets();
-  }, [userId, getBudgetsForUser]); // Depend on userId and getBudgetsForUser
+  }, [userId, getBudgetsForUser, budgetRefetchTrigger]); // Depend on userId and getBudgetsForUser
 
   return (
     <>
@@ -92,6 +97,8 @@ const Dashboard = () => {
         handleClose={() => {
           setShowAddBudgetModal(false);
         }}
+        userId={userId}
+        onBudgetAdded={handleBudgetAdded}
       />
       <AddExpenseModal
         show={showAddExpenseModal}
