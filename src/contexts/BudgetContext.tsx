@@ -57,18 +57,19 @@ export const BudgetProvider = ({ children }: Props) => {
     );
   };
 
-  function addExpense({ description, budgetId, amount }: any) {
-    const newExpense: Expense = {
-      id: uuidV4(),
-      description,
-      budgetId,
-      amount
-    };
-
-    setExpenses((prevExpenses: Expense[]) => {
-      return [...prevExpenses, newExpense];
-    });
-  }
+  const addExpense = async (
+    userId: string,
+    budgetId: string,
+    expense: object
+  ) => {
+    return await makeAxiosRequest(
+      HttpMethods.POST,
+      config.backendHost,
+      config.addExpenseUrl(userId, budgetId),
+      {},
+      expense
+    );
+  };
 
   const addBudget = async ({ userId, name, max }: any) => {
     return await makeAxiosRequest(

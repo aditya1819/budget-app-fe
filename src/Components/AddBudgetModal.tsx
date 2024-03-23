@@ -29,7 +29,6 @@ function AddBudgetModal({ show, handleClose, userId, onBudgetAdded }: any) {
           name: nameRef.current.value,
           max: maxRef.current.value
         });
-        console.log(data);
         onBudgetAdded();
       } catch (error) {
         console.error(JSON.stringify(error));

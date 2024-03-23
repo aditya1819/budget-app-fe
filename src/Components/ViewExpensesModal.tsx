@@ -14,7 +14,6 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
     const fetchBudgets = async () => {
       try {
         const data = await getBudgetExpenses(userId, budgetId);
-        console.log(data.expenses);
         setExpenses(data.expenses ?? []);
       } catch (error) {
         console.error('Failed to fetch expenses:', error);

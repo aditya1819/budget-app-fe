@@ -1,15 +1,21 @@
 import React, { useRef } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { Budget, useBudget, UNCATEGORZED_ID } from '../contexts/BudgetContext';
+import { useBudget } from '../contexts/BudgetContext';
 
-function AddExpenseModal({ show, handleClose, defaultBudgetId }: any) {
+function AddExpenseModal({
+  show,
+  handleClose,
+  budget,
+  userId,
+  onBudgetAdded
+}: any) {
   const descriptionRef = useRef<HTMLInputElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
   const budgetIdRef = useRef<HTMLSelectElement>(null);
 
-  const { addExpense, budgets } = useBudget();
+  const { addExpense } = useBudget();
 
-  function handleSubmit(e: React.SyntheticEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     const descriptionRefCurrent = descriptionRef.current;
     const budgetIdRefCurrent = budgetIdRef.current;
     const amountRefCurrent = amountRef.current;
@@ -17,13 +23,24 @@ function AddExpenseModal({ show, handleClose, defaultBudgetId }: any) {
     e.preventDefault();
 
     if (descriptionRefCurrent && budgetIdRefCurrent && amountRefCurrent) {
-      addExpense({
-        description: descriptionRef.current.value,
-        amount: parseFloat(amountRef.current.value),
-        budgetId: budgetIdRef.current.value
-      });
+      const date = new Date();
+
+      const payload = {
+        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        detail: descriptionRef.current.value,
+        amount: parseFloat(amountRef.current.value)
+      };
+
+      try {
+        const data = await addExpense(userId, budget.id, payload);
+        onBudgetAdded();
+      } catch (error) {}
     }
     handleClose();
+  }
+
+  if (!budget) {
+    return null;
   }
 
   return (
@@ -52,13 +69,8 @@ function AddExpenseModal({ show, handleClose, defaultBudgetId }: any) {
 
           <Form.Group className="mb-3" controlId="amount">
             <Form.Label>Budget Section</Form.Label>
-            <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
-              <option id={UNCATEGORZED_ID}>Uncategorized</option>
-              {budgets.map((budget: Budget) => (
-                <option key={budget.id} value={budget.id}>
-                  {budget.name}
-                </option>
-              ))}
+            <Form.Select defaultValue={budget.id} ref={budgetIdRef}>
+              <option id={budget.id}>{budget.title}</option>
             </Form.Select>
           </Form.Group>
 

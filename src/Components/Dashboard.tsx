@@ -20,7 +20,9 @@ const Dashboard = () => {
   const [viewExpenseModalBudgetId, setViewExpenseModalBudgetId] = useState<
     string | undefined
   >();
-  const [addExpenseBudgetId, setAddExpenseBudgetId] = useState();
+  const [addExpenseBudget, setAddExpenseBudget] = useState(
+    null as unknown as BudgetList
+  );
   const [budgets, setBudgets] = useState([] as BudgetList[]);
 
   const [budgetRefetchTrigger, setBudgetRefetchTrigger] = useState(false);
@@ -32,16 +34,15 @@ const Dashboard = () => {
 
   const userId = '65ff225cdc9eebfd36be1ebb';
 
-  function openAddExpenseModal(budgetId: any): any {
+  function openAddExpenseModal(budget: BudgetList): any {
     setShowAddExpenseModal(true);
-    setAddExpenseBudgetId(budgetId);
+    setAddExpenseBudget(budget);
   }
 
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
         const budgets = await getBudgetsForUser(userId);
-        console.log(budgets); // Do something with the budgets
         setBudgets(budgets);
       } catch (error) {
         console.error('Failed to fetch budgets:', error);
@@ -59,9 +60,9 @@ const Dashboard = () => {
           <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>
             Add budget
           </Button>
-          <Button variant="outline-primary" onClick={openAddExpenseModal}>
+          {/* <Button variant="outline-primary" onClick={openAddExpenseModal}>
             Add Expense
-          </Button>
+          </Button> */}
         </Stack>
 
         <div
@@ -80,9 +81,8 @@ const Dashboard = () => {
                 name={budget.title}
                 amount={amount}
                 max={budget.total}
-                onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+                onAddExpenseClick={() => openAddExpenseModal(budget)}
                 onViewExpenseClick={() => {
-                  console.log(budget.id);
                   setViewExpenseModalBudgetId(budget.id);
                 }}
               ></BudgetCard>
@@ -102,7 +102,9 @@ const Dashboard = () => {
       />
       <AddExpenseModal
         show={showAddExpenseModal}
-        defaultBudgetId={addExpenseBudgetId}
+        budget={addExpenseBudget}
+        userId={userId}
+        onBudgetAdded={handleBudgetAdded}
         handleClose={() => {
           setShowAddExpenseModal(false);
         }}
