@@ -6,13 +6,9 @@ import BudgetCard from './BudgetCard';
 import AddBudgetModal from './AddBudgetModal';
 
 import { useEffect, useState } from 'react';
-import {
-  useBudget,
-  Budget,
-  Expense,
-  UNCATEGORZED_ID
-} from '../contexts/BudgetContext';
+
 import { BudgetList } from '../Schema';
+import { getBudgetsForUser } from '../Utils';
 
 const Dashboard = () => {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -30,7 +26,6 @@ const Dashboard = () => {
   const handleBudgetAdded = () => {
     setBudgetRefetchTrigger((prev) => !prev); // Toggle the state to trigger refetch
   };
-  const { getBudgetsForUser } = useBudget();
 
   const userId = '65ff225cdc9eebfd36be1ebb';
 

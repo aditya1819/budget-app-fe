@@ -1,19 +1,8 @@
 import BudgetCard from './BudgetCard';
-import { useBudget, Expense, Budget } from '../contexts/BudgetContext';
 
 function TotalCard(props: any) {
-  const { expenses, budgets } = useBudget();
-
-  const amount = expenses.reduce(
-    (total: number, expense: Expense) => total + expense.amount,
-    0
-  );
-
-  const max = budgets.reduce(
-    (total: number, budget: Budget) => total + budget.max,
-    0
-  );
-
+  const max = 0,
+    amount = 0;
   if (max === 0) return null;
 
   return (

@@ -1,14 +1,18 @@
 import { Button, Modal, Stack } from 'react-bootstrap';
-import { Budget, useBudget } from '../contexts/BudgetContext';
-import { currencyFormatter } from '../Utils';
+import {
+  currencyFormatter,
+  deleteBudget,
+  deleteExpense,
+  getBudgetExpenses
+} from '../Utils';
 import { useEffect, useState } from 'react';
-import { ExpenseList } from '../Schema';
+import { BudgetList, ExpenseList } from '../Schema';
 
 function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
-  const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } =
-    useBudget();
+  // TODO
 
   const [expenses, setExpenses] = useState([] as ExpenseList[]);
+  const [budget, setBudget] = useState(null as unknown as BudgetList);
   const [fetchBudgetTrigger, setFetchBudgetTrigger] = useState(false);
 
   const handleBudgetChange = () => {
@@ -20,6 +24,7 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
       try {
         const data = await getBudgetExpenses(userId, budgetId);
         setExpenses(data.expenses ?? []);
+        setBudget(data);
       } catch (error) {
         console.error('Failed to fetch expenses:', error);
       }
@@ -28,14 +33,12 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
     fetchBudgets();
   }, [userId, budgetId, fetchBudgetTrigger]);
 
-  const budget = budgets.find((budget: Budget) => budget.id === budgetId);
-
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           <Stack direction="horizontal" gap={2}>
-            <div>Expenses - {budget?.name}</div>
+            <div>Expenses - {budget?.title}</div>
             <Button
               variant="outline-danger"
               onClick={async () => {

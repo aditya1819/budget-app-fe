@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useBudget } from '../contexts/BudgetContext';
+import { addExpense } from '../Utils';
 
 function AddExpenseModal({
   show,
@@ -12,8 +12,6 @@ function AddExpenseModal({
   const descriptionRef = useRef<HTMLInputElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
   const budgetIdRef = useRef<HTMLSelectElement>(null);
-
-  const { addExpense } = useBudget();
 
   async function handleSubmit(e: React.SyntheticEvent) {
     const descriptionRefCurrent = descriptionRef.current;

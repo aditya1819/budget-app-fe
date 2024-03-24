@@ -1,20 +1,10 @@
 import React, { useRef } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useBudget } from '../contexts/BudgetContext';
+import { addBudget } from '../Utils';
 
 function AddBudgetModal({ show, handleClose, userId, onBudgetAdded }: any) {
   const nameRef = useRef<HTMLInputElement>(null);
   const maxRef = useRef<HTMLInputElement>(null);
-
-  const { addBudget } = useBudget();
-
-  //  curl -X POST http://localhost:3000/users/65fad08ad2d4be06ba7439a4/budgets \
-  // -H "Content-Type: application/json" \
-  // -d '{
-  //  "budgetCategory": "Movies",
-  //  "amount": 1000,
-  //  "expenses": []
-  // }'
 
   async function handleSubmit(e: React.SyntheticEvent) {
     const nameRefCurrent = nameRef.current;
