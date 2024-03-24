@@ -17,5 +17,13 @@ export const config = Object.freeze({
 
   addExpenseUrl(userId: string, budgetId: string) {
     return `users/${userId}/budgets/${budgetId}/expenses`;
+  },
+
+  deleteBudgetUrl: (userId: string, budgetId: string) => {
+    return `users/${userId}/budgets/${budgetId}`;
+  },
+
+  deleteExpenseUrl: (userId: string, budgetId: string, expenseId: string) => {
+    return `users/${userId}/budgets/${budgetId}/expenses/${expenseId}`;
   }
 });

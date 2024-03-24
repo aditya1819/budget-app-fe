@@ -31,7 +31,8 @@ export interface Budget {
 
 enum HttpMethods {
   GET = 'GET',
-  POST = 'POST'
+  POST = 'POST',
+  DELETE = 'DELETE'
 }
 
 export const BudgetProvider = ({ children }: Props) => {
@@ -81,24 +82,25 @@ export const BudgetProvider = ({ children }: Props) => {
     );
   };
 
-  function deleteBudget({ id }: any) {
-    setExpenses((prevExpenses: Expense[]) => {
-      return prevExpenses.map((expense) => {
-        if (expense.budgetId !== id) return expense;
-        return { ...expense, budgetId: UNCATEGORZED_ID };
-      });
-    });
+  const deleteBudget = async (userId: string, budgetId: string) => {
+    return await makeAxiosRequest(
+      HttpMethods.DELETE,
+      config.backendHost,
+      config.deleteBudgetUrl(userId, budgetId)
+    );
+  };
 
-    setBudgets((prevBudgets: Budget[]) => {
-      return prevBudgets.filter((budgets) => budgets.id !== id);
-    });
-  }
-
-  function deleteExpense({ id }: any) {
-    setExpenses((prevExpenses: Expense[]) => {
-      return prevExpenses.filter((expenses) => expenses.id !== id);
-    });
-  }
+  const deleteExpense = async (
+    userId: string,
+    budgetId: string,
+    expenseId: string
+  ) => {
+    return await makeAxiosRequest(
+      HttpMethods.DELETE,
+      config.backendHost,
+      config.deleteExpenseUrl(userId, budgetId, expenseId)
+    );
+  };
 
   return (
     <BudgetsContext.Provider

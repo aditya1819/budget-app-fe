@@ -9,6 +9,11 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
     useBudget();
 
   const [expenses, setExpenses] = useState([] as ExpenseList[]);
+  const [fetchBudgetTrigger, setFetchBudgetTrigger] = useState(false);
+
+  const handleBudgetChange = () => {
+    setFetchBudgetTrigger((prev) => !prev); // Toggle the state to trigger refetch
+  };
 
   useEffect(() => {
     const fetchBudgets = async () => {
@@ -21,7 +26,7 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
     };
 
     fetchBudgets();
-  }, [userId, budgetId]);
+  }, [userId, budgetId, fetchBudgetTrigger]);
 
   const budget = budgets.find((budget: Budget) => budget.id === budgetId);
 
@@ -33,8 +38,8 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
             <div>Expenses - {budget?.name}</div>
             <Button
               variant="outline-danger"
-              onClick={() => {
-                deleteBudget(budget);
+              onClick={async () => {
+                await deleteBudget(userId, budgetId);
                 handleClose();
               }}
             >
@@ -53,7 +58,11 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
                 {currencyFormatter.format(expense.amount)}
               </div>
               <Button
-                onClick={() => deleteExpense(expense)}
+                onClick={async () => {
+                  console.log('dsjaklf');
+                  await deleteExpense(userId, budgetId, expense.id);
+                  handleBudgetChange();
+                }}
                 size="sm"
                 variant="outline-danger"
               >

@@ -114,6 +114,7 @@ const Dashboard = () => {
         budgetId={viewExpenseModalBudgetId}
         handleClose={() => {
           setViewExpenseModalBudgetId(undefined);
+          handleBudgetAdded();
         }}
       />
     </>
