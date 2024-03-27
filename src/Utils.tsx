@@ -114,3 +114,11 @@ export const getBudgetsForUser = async (userId: string): Promise<any> => {
     config.getBudgetsForUserUrl(userId)
   );
 };
+
+export const getDate = (date: string | Date) => {
+  const newDate = new Date(date);
+
+  return `${newDate.getDate()}/${
+    newDate.getMonth() + 1
+  }/${newDate.getFullYear()}`;
+};

@@ -1,6 +1,6 @@
 export const config = Object.freeze({
   //
-  backendHost: 'http://localhost:3000/',
+  backendHost: 'http://127.0.0.1:3000/',
 
   // endpoints
   getBudgetsForUserUrl: (userId: string) => {

@@ -9,4 +9,5 @@ export type ExpenseList = {
   id: string;
   title: string;
   amount: number;
+  date: string | Date;
 };

@@ -3,7 +3,8 @@ import {
   currencyFormatter,
   deleteBudget,
   deleteExpense,
-  getBudgetExpenses
+  getBudgetExpenses,
+  getDate
 } from '../Utils';
 import { useEffect, useState } from 'react';
 import { BudgetList, ExpenseList } from '../Schema';
@@ -57,12 +58,12 @@ function ViewExpensesModal({ handleClose, userId, budgetId }: any) {
           {expenses.map((expense) => (
             <Stack direction="horizontal" gap={2} key={expense.id}>
               <div className="me-auto fs-4">{expense.title}</div>
+              <div className="me-auto fs-6">{getDate(expense.date)}</div>
               <div className="fs-5">
                 {currencyFormatter.format(expense.amount)}
               </div>
               <Button
                 onClick={async () => {
-                  console.log('dsjaklf');
                   await deleteExpense(userId, budgetId, expense.id);
                   handleBudgetChange();
                 }}
