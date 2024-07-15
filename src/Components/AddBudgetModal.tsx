@@ -43,7 +43,7 @@ function AddBudgetModal({ show, handleClose, userId, onBudgetAdded }: any) {
           <Form.Group className="mb-3" controlId="max">
             <Form.Label>Maximum Spending</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
               ref={maxRef}
               required
               min={0}
